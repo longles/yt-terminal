@@ -8,7 +8,6 @@ FRAMES_DIR = './frames'
 PIXEL_FRAMES_DIR = './pixel_frames'
 
 
-# TODO: Add progress bars for pixelation
 if __name__ == '__main__':
     parser = ArgumentParser(description='Convert youtube videos into command line animations')
     parser.add_argument('-r', '--resolution', help='set the resolution of the display')

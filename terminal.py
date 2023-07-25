@@ -62,20 +62,6 @@ class Renderer:
         return frames
     
 
-    def _convert_all_frames_seq(self, dir):
-        sorted_files = sorted([os.path.join(dir, f) for f in os.listdir(dir)], key=lambda x: int(re.sub('[^0-9]', '', x)))
-        self.num_frames = len(sorted_files)
-        frames = []
-
-        for f in tqdm(sorted([os.path.join(dir, f) for f in os.listdir(dir)], key=lambda x: int(re.sub('[^0-9]', '', x))), 
-                      total=self.num_frames,
-                      desc='Converting frames to ascii'):
-            frames.append(self.set_frame_ascii(f))
-        
-        print(RESET_CODE)
-        return frames
-    
-
     def set_frame_ascii(self, file):
         img = Image.open(file).convert('RGB')
         img_arr = np.asarray(img)

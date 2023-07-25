@@ -73,19 +73,6 @@ class FrameDownloader:
                           total=len(sorted_files),
                           desc='Resizing video frames'):
                 pass
-            
-            # print(RESET_CODE)
-
-
-    def _pixelate_all_frames_seq(self):
-        files = [os.path.join(self.frame_dir, f) for f in os.listdir(self.frame_dir)]
-        sorted_files = sorted(files, key=lambda x: int(re.sub('[^0-9]', '', x)))
-        for x in tqdm(enumerate(sorted_files),
-                        total=len(sorted_files),
-                        desc='Resizing video frames'):
-            self._pixelate_frame(x)
-        
-        print(RESET_CODE)
 
 
     def _pixelate_frame(self, pair):
