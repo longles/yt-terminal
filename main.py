@@ -1,7 +1,6 @@
 from argparse import ArgumentParser
-
-import terminal
-import frames
+from terminal import Renderer
+from frames import FrameDownloader
 
 
 FRAMES_DIR = './frames'
@@ -18,8 +17,8 @@ if __name__ == '__main__':
     resolution = int(args['resolution'])
     url = args['url']
 
-    terminal = terminal.Renderer(resolution, resolution, PIXEL_FRAMES_DIR)
-    frames = frames.FrameDownloader(resolution, resolution, FRAMES_DIR, PIXEL_FRAMES_DIR)
+    frame = FrameDownloader(resolution, FRAMES_DIR, PIXEL_FRAMES_DIR)
+    term = Renderer(resolution, PIXEL_FRAMES_DIR)
 
-    frames.fetch_frames(url)
-    terminal.render()
+    frame.fetch_frames(url)
+    term.render()

@@ -21,7 +21,7 @@ https://itsfoss.com/ffmpeg/
 
 # Usage
 
-**Disclaimer**: This program can create GB sized folders of images
+**Disclaimer**: The RAM and disk usage of this program can grow quite fast
 
 ```
 python main.py -r <resolution> -u <youtube url>
@@ -30,9 +30,7 @@ Depending on the resolution you may need to zoom out with `ctrl +-` or `ctrl scr
 
 For reference, the image below is in the Courier New font using
 ```
-python main.py -r 100 -u https://www.youtube.com/watch?v=QH2-TGUlwu4
+python main.py -r 200 -u https://www.youtube.com/watch?v=QH2-TGUlwu4
 ```
-
-
 
 ![meow](./img/nyan_cat.png)

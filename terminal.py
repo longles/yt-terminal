@@ -29,22 +29,28 @@ def bg_code(color):
 
 
 class Renderer:
-    def __init__(self, width, height, frames_dir):
+    def __init__(self, width, frames_dir):
         self.width = width
-        self.height = height
+        self.height = 0
         self.frames_dir = frames_dir
+
+
+    def set_width(self, frame):
+        self.height = frame.shape[0] // self.width
 
 
     def render(self):
         for frame in self._convert_all_frames(self.frames_dir):
+            self.set_width(frame)
             self._draw(frame)
-            time.sleep(0.03)
+            time.sleep(0.025)
         print(CLEAR_CODE)
 
 
     def _draw(self, arr):
         print(REFRESH_CODE)
-        print('\n'.join(f'{bg_code(BLACK)} '.join(arr[i] for i in range(self.height * x, self.height * (x + 1))) for x in range(self.width)))
+        print('\n'.join(f''.join(self.set_ascii_color(arr[i]) 
+                                 for i in range(self.width * x, self.width * (x + 1))) for x in range(self.height)), flush=True)
 
 
     def _convert_all_frames(self, dir):
@@ -64,11 +70,9 @@ class Renderer:
 
     def set_frame_ascii(self, file):
         img = Image.open(file).convert('RGB')
-        img_arr = np.asarray(img)
-        img_arr = img_arr.reshape(-1, img_arr.shape[-1])
-        
-        return [self.set_ascii_color(rgb) for rgb in img_arr]
+        img_arr = np.asarray(img, dtype=np.uint8)
+        return img_arr.reshape(-1, img_arr.shape[-1])
 
 
     def set_ascii_color(self, rgb):
-        return f'{fg_code(rgb)}{bg_code(BLACK)}{TILE}{END_CODE}'
+        return f'{fg_code(rgb)}{TILE}{END_CODE}'
