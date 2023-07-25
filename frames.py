@@ -32,13 +32,14 @@ class FrameDownloader:
                 shutil.rmtree(self.pixel_frames_dir)
         else:
             prev_w, prev_url = open('prev.txt', 'r').readlines()
-            if int(prev_w) != self.width:
-                shutil.rmtree(self.pixel_frames_dir)
-            
+            flag = True
             if prev_url != url:
+                flag = False
                 shutil.rmtree(self.frames_dir)
                 shutil.rmtree(self.pixel_frames_dir)
 
+            if int(prev_w) != self.width and flag:
+                shutil.rmtree(self.pixel_frames_dir)
 
         if (not os.path.exists(self.frames_dir)):
             os.mkdir(self.frames_dir)

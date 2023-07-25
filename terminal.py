@@ -29,10 +29,11 @@ def bg_code(color):
 
 
 class Renderer:
-    def __init__(self, width, frames_dir):
+    def __init__(self, width, frames_dir, fps):
         self.width = width
         self.height = 0
         self.frames_dir = frames_dir
+        self.fps = fps
 
 
     def set_width(self, frame):
@@ -43,7 +44,7 @@ class Renderer:
         for frame in self._convert_all_frames(self.frames_dir):
             self.set_width(frame)
             self._draw(frame)
-            time.sleep(0.025)
+            time.sleep(1 / self.fps)
         print(CLEAR_CODE)
 
 
