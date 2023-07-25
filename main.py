@@ -9,9 +9,9 @@ PIXEL_FRAMES_DIR = './pixel_frames'
 
 if __name__ == '__main__':
     parser = ArgumentParser(description='Convert youtube videos into command line animations')
-    parser.add_argument('-r', '--resolution', help='set the resolution of the display')
-    parser.add_argument('-u', '--url', help='url of the youtube video')
-    parser.add_argument('-f', '--fps', help='fps of the animation')
+    parser.add_argument('-r', '--resolution', help='set the resolution of the display', required=True)
+    parser.add_argument('-u', '--url', help='url of the youtube video',required=True)
+    parser.add_argument('-f', '--fps', help='fps of the animation', default=30)
 
     args = vars(parser.parse_args())
 

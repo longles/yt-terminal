@@ -24,9 +24,11 @@ https://itsfoss.com/ffmpeg/
 **Disclaimer**: The RAM and disk usage of this program can grow quite fast
 
 ```
-python main.py -r <resolution> -u <youtube url>
+python main.py -r <resolution> -f <fps> -u <youtube url>
 ```
 Depending on the resolution you may need to zoom out with `ctrl +-` or `ctrl scroll`. You may also need to mess around with your terminal fonts/colors to get it nice looking. 
+
+The default fps cap is 30, but you may to change it depending on the resolution. High resolutions is more expensive to draw, and thus may need a higher fps cap to stay smooth.
 
 For reference, the image below is in the Courier New font using
 ```
