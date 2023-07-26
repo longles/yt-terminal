@@ -26,7 +26,7 @@ https://itsfoss.com/ffmpeg/
 ```
 python main.py -r <resolution> -f <fps-optional> -u <youtube url>
 ```
-Depending on the resolution you may need to zoom out with `ctrl +-` or `ctrl scroll`. You may also need to mess around with your terminal fonts/colors to get it nice looking. 
+Depending on the resolution you may need to zoom out with `ctrl +-` or `ctrl scroll`. You may also need to mess around with your terminal fonts/colors to get it nice looking.
 
 The default fps is 30 since that is the typical framerate of Youtube videos.
 
@@ -37,3 +37,10 @@ python main.py -r 240 -u https://www.youtube.com/watch?v=NWQKiefZ-XI
 ```
 
 ![race](./img/race.png)
+
+# TODO
+
+- Add different rendering options such as ascii, greyscale, etc
+- Option to provide a video file instead of Youtube
+- Catching signals to run cleanup
+- Audio?
