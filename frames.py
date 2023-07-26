@@ -30,7 +30,6 @@ class FrameDownloader:
     def fetch_frames(self, url):
         if not os.path.isfile('prev.txt'):
             remove_dir(self.frames_dir)
-            print('belh')
         else:
             prev_w, prev_url, prev_fps = open('prev.txt', 'r').read().split('\n')
             if int(prev_w) != self.width or prev_url != url or int(prev_fps) != self.fps:

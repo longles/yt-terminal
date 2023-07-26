@@ -35,7 +35,7 @@ if __name__ == '__main__':
     if fps is None:
         video_info = ffmpeg.probe(VIDEO_PATH, select_streams = "v")['streams'][0]
         avg_fps = video_info['avg_frame_rate'].split('/')
-        fps = avg_fps[0] // avg_fps[1]
+        fps = int(avg_fps[0]) // int(avg_fps[1])
     else:
         fps = int(fps)
 

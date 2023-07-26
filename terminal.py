@@ -53,7 +53,7 @@ class Renderer:
                 print(RESET_CODE)
 
             self._draw(frame)
-            while time.perf_counter() < (curr_time + 1 / self.fps):  # time.sleep() is overrated
+            while time.perf_counter() < (curr_time + 1 / self.fps):  # more accurate than time.sleep()
                 pass
 
 
