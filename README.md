@@ -21,13 +21,14 @@ https://phoenixnap.com/kb/ffmpeg-windows
 ### Linux
 https://itsfoss.com/ffmpeg/
 
+
 # Usage
 ```
 python main.py -r <resolution> -f <fps-optional> -u <youtube url>
 ```
 Since the characters in the terminal are taller than they are wide, `<resolution>` only changes the width since the height is automatically calculated to maintain the original aspect ratio.
 
-The fps of the animation is set to the be same as the original video, but you can optionally set your own. However, the actual fps depends on the resolution, the terminal, and your computer.
+The fps of the animation is the same as the video, but you can optionally set your own. However, the actual fps depends on the resolution, the terminal, and your computer.
 
 `-r 280` should maintain 30fps while `-r 360` should maintain 24fps but YMMV.
 

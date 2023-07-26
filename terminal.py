@@ -12,12 +12,10 @@ WORKERS = None
 CHUNK_SIZE = 4
 
 END_CODE = '\033[0;0m'
-CLEAR_CODE = '\033[2J'
 REFRESH_CODE = '\033[H'
 RESET_CODE = '\033c'
 
 TILE = ' '
-BLACK = 0
 
 
 def fg_code(rgb):
@@ -45,7 +43,7 @@ class Renderer:
         frames = self._convert_all_frames(self.frames_dir)
 
         for frame in tqdm(frames, total=self.num_frames, desc='Frames',
-                          unit='fr', ncols=self.width, colour='WHITE'):
+                          unit=' frames', ncols=self.width, colour='WHITE'):
             curr_time = time.perf_counter()
             if setup:
                 setup = False
@@ -73,7 +71,7 @@ class Renderer:
         frames = []
 
         for f in tqdm(executor.map(self._set_frame_ascii, sorted_files, chunksize=CHUNK_SIZE),
-                      total=self.num_frames, desc='Converting frames to ascii', colour='WHITE'):
+                      total=self.num_frames, desc='Converting frames to ascii', colour='WHITE', unit='frames'):
             frames.append(f)
 
         print(RESET_CODE)
