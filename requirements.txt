@@ -2,3 +2,4 @@ tqdm
 Pillow
 pytube
 numpy
+ffmpeg_progress_yield
