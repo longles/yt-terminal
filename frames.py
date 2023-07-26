@@ -6,7 +6,6 @@ from tqdm import tqdm
 import subprocess
 import shutil
 import shlex
-import gc
 import os
 import re
 
@@ -14,8 +13,15 @@ import re
 WORKERS = None
 CHUNK_SIZE = 4
 
+SCALE_FACTOR = 0.45
+
 RESET_CODE = '\033c'
        
+
+def remove_dir(directory):
+    if os.path.exists(directory):
+        shutil.rmtree(directory)
+
 
 class FrameDownloader:
     def __init__(self, width, frames_dir, pixel_frames_dir):
@@ -27,19 +33,16 @@ class FrameDownloader:
 
     def fetch_frames(self, url):
         if not os.path.isfile('prev.txt'):
-            if os.path.exists(self.frames_dir) and os.path.exists(self.pixel_frames_dir):
-                shutil.rmtree(self.frames_dir)
-                shutil.rmtree(self.pixel_frames_dir)
+            remove_dir(self.frames_dir)
+            remove_dir(self.pixel_frames_dir)
         else:
             prev_w, prev_url = open('prev.txt', 'r').readlines()
-            flag = True
             if prev_url != url:
-                flag = False
-                shutil.rmtree(self.frames_dir)
-                shutil.rmtree(self.pixel_frames_dir)
+                remove_dir(self.frames_dir)
+                remove_dir(self.pixel_frames_dir)
 
-            if int(prev_w) != self.width and flag:
-                shutil.rmtree(self.pixel_frames_dir)
+            if int(prev_w) != self.width:
+                remove_dir(self.pixel_frames_dir)
 
         if (not os.path.exists(self.frames_dir)):
             os.mkdir(self.frames_dir)
@@ -49,7 +52,7 @@ class FrameDownloader:
         if (not os.path.exists(self.pixel_frames_dir)):
             os.mkdir(self.pixel_frames_dir)
             self._pixelate_all_frames()
-        
+
         with open('prev.txt', 'w') as f:
             f.write('\n'.join([str(self.width), url]))
 
@@ -86,7 +89,7 @@ class FrameDownloader:
         if self.height == 0: 
             orig_width, orig_height = img.size
             r = orig_height / orig_width
-            self.height = int(self.width * r * 0.5)
+            self.height = int(self.width * r * SCALE_FACTOR)
 
-        resized_img = img.resize((self.width, self.height), Image.BILINEAR)
+        resized_img = img.resize((self.width, self.height), Image.LANCZOS)
         resized_img.save(f'{self.pixel_frames_dir}/{pair[0]}.png')

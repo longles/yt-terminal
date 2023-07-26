@@ -7,16 +7,17 @@ import time
 import os
 import re
 
-FPS = 30
+
 WORKERS = None
 CHUNK_SIZE = 4
+FPS_SCALE = 1.1  # accounts for slow-down from rendering
 
 END_CODE = '\033[0;0m'
 CLEAR_CODE = '\033[2J'
 REFRESH_CODE = '\033[H'
 RESET_CODE = '\033c'
 
-TILE = '█'
+TILE = ' '
 BLACK = 0
 
 
@@ -24,8 +25,8 @@ def fg_code(rgb):
     return f'\033[38;2;{rgb[0]};{rgb[1]};{rgb[2]}m'
 
 
-def bg_code(color):
-    return f'\033[48;5;{color}m'
+def bg_code(rgb):
+    return f'\033[48;2;{rgb[0]};{rgb[1]};{rgb[2]}m'
 
 
 class Renderer:
@@ -33,7 +34,7 @@ class Renderer:
         self.width = width
         self.height = 0
         self.frames_dir = frames_dir
-        self.fps = fps
+        self.fps = 1 / (fps * FPS_SCALE)
 
 
     def set_width(self, frame):
@@ -44,7 +45,7 @@ class Renderer:
         for frame in self._convert_all_frames(self.frames_dir):
             self.set_width(frame)
             self._draw(frame)
-            time.sleep(1 / self.fps)
+            time.sleep(self.fps)
         print(CLEAR_CODE)
 
 
@@ -76,4 +77,4 @@ class Renderer:
 
 
     def set_ascii_color(self, rgb):
-        return f'{fg_code(rgb)}{TILE}{END_CODE}'
+        return f'{bg_code(rgb)}{TILE}{END_CODE}'
