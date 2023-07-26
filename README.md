@@ -1,4 +1,6 @@
 # Setup
+Since this project uses 24-bit true color, visit this [gist](https://gist.github.com/kurahaupo/6ce0eaefe5e730841f03cb82b061daa2) to see if your terminal supports it. Most modern terminals should, but maybe you like your retro stuff.
+
 
 To install the Python packages run
 ```
@@ -20,17 +22,18 @@ https://phoenixnap.com/kb/ffmpeg-windows
 https://itsfoss.com/ffmpeg/
 
 # Usage
-
-**Disclaimer**: The RAM and disk usage of this program can grow quite fast.
-
 ```
 python main.py -r <resolution> -f <fps-optional> -u <youtube url>
 ```
+Since the characters in the terminal are taller than they are wide, `<resolution>` only changes the width since the height is automatically calculated to maintain the original aspect ratio.
+
+The fps of the animation is set to the be same as the original video, but you can optionally set your own. However, the actual fps depends on the resolution, the terminal, and your computer.
+
+`-r 280` should maintain 30fps while `-r 360` should maintain 24fps but YMMV.
+
 Depending on the resolution you may need to zoom out with `ctrl +-` or `ctrl scroll`. You may also need to mess around with your terminal fonts/colors to get it nice looking.
 
-The default fps is 30 since that is the typical framerate of Youtube videos.
-
-For reference, the image below is captured from
+# Example
 
 ```
 python main.py -r 240 -u https://www.youtube.com/watch?v=NWQKiefZ-XI
