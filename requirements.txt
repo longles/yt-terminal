@@ -3,3 +3,4 @@ Pillow
 pytube
 numpy
 ffmpeg_progress_yield
+ffmpeg-python
