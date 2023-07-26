@@ -34,7 +34,7 @@ class Renderer:
         self.fps = fps
 
 
-    def set_width(self, frame):
+    def set_height(self, frame):
         self.height = frame.shape[0] // self.width
 
 
@@ -47,7 +47,7 @@ class Renderer:
             curr_time = time.perf_counter()
             if setup:
                 setup = False
-                self.set_width(frame)
+                self.set_height(frame)
                 print(RESET_CODE)
 
             self._draw(frame)
@@ -71,7 +71,7 @@ class Renderer:
         frames = []
 
         for f in tqdm(executor.map(self._set_frame_ascii, sorted_files, chunksize=CHUNK_SIZE),
-                      total=self.num_frames, desc='Converting frames to ascii', colour='WHITE', unit='frames'):
+                      total=self.num_frames, desc='Converting frames to ascii', colour='WHITE', unit=' frames'):
             frames.append(f)
 
         print(RESET_CODE)
