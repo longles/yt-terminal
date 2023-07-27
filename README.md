@@ -35,7 +35,7 @@ If `fps` is not provided, then the video runs at the frame rate of the youtube v
 # Example
 
 ```
-python main.py -u https://www.youtube.com/watch?v=SjBOC94WHBQ
+python main.py -u https://www.youtube.com/watch?v=uMeR2W19wT0
 ```
 
 ![example](./img/example.png)
