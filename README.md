@@ -38,11 +38,11 @@ If `fps` is not provided, then the video runs at the frame rate of the youtube v
 python main.py -u https://www.youtube.com/watch?v=SjBOC94WHBQ
 ```
 
-![eva](./img/example.png)
+![example](./img/example.png)
 
 # TODO
 
-- Add different rendering options such as ascii, greyscale, etc
+- Add different rendering options such as ascii lumosity, greyscale, etc
 - Option to provide a video file instead of Youtube
 - Catching signals to run cleanup
 - Synced audio

@@ -3,15 +3,18 @@ from terminal import Renderer
 from frames import FrameDownloader
 from pytube import YouTube
 
-import ffmpeg
-import os
-
 
 VIDEO_PATH = './video.mp4'
 FRAMES_DIR = './frames'
 
+WORKERS = None  # Automatically decide number of processes to spawn
+CHUNK_SIZE = 4
 
-def download_yt(url):
+
+"""
+Download a Youtube video to VIDEO_PATH.
+"""
+def download_yt(url: str) -> None:
     try:
         YouTube(url).streams.get_highest_resolution().download(filename=VIDEO_PATH)
     except:
@@ -19,14 +22,10 @@ def download_yt(url):
         exit(1)
 
 
-def get_terminal_width():
-    width = os.get_terminal_size().columns
-    if width % 2 != 0:
-        width -= 1
-    return width
-
-
-def validate_input(resolution, fps):
+"""
+Checks if the resolution and fps provided command line args are valid.
+"""
+def validate_input(resolution: str | None, fps: str | None) -> tuple[int | None, int | None]:
     def check_resolution(resolution):
         try:
             r = int(resolution)
@@ -80,5 +79,5 @@ if __name__ == '__main__':
     frame = FrameDownloader(resolution, VIDEO_PATH, FRAMES_DIR, fps)
     frame.fetch_frames(url)
 
-    term = Renderer(frame.get_width(), FRAMES_DIR, frame.get_fps())
+    term = Renderer(frame.get_width(), FRAMES_DIR, frame.get_fps(), WORKERS, CHUNK_SIZE)
     term.render()
