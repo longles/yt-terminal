@@ -40,7 +40,7 @@ python main.py -[flags] -u <youtube url>
 
 &ensp; Switch to a faster rendering algorithm. Results in better fps at higher resolutions, but can be unstable, especially if the fps value set by `-f` is too high.
 
-> `-b <stats: toggle> `
+> `-s <stats: toggle> `
 
 &ensp; Add the flag to display a duration bar, fps, and elapsed time at the bottom of the video. Can be a little buggy with when enabled with the `-p` flag.
 
@@ -55,7 +55,7 @@ The framerate will depend on your computer, the terminal you are using, and reso
 # Example
 
 ```
-python main.py -p -b -u https://www.youtube.com/watch?v=uMeR2W19wT0
+python main.py -p -s -u https://www.youtube.com/watch?v=uMeR2W19wT0
 ```
 
 ![example](./img/example.png)
