@@ -41,6 +41,11 @@ class FrameDownloader:
 
 
     def fetch_frames(self, url):
+        if os.path.isfile(self.video_path):
+            self.set_resolution()
+        else:
+            remove_dir(self.frames_dir)
+
         if not os.path.isfile('prev.txt'):
             remove_dir(self.frames_dir)
         else:
@@ -62,7 +67,7 @@ class FrameDownloader:
             f.write('\n'.join((str(self.width), url, str(self.fps))))
 
 
-    def _split_frames(self):
+    def set_resolution(self):
         if self.fps is None:
             video_info = ffmpeg.probe(self.video_path, select_streams = "v")['streams'][0]
             avg_fps = video_info['avg_frame_rate'].split('/')
@@ -78,6 +83,8 @@ class FrameDownloader:
             r = int(ratio[1]) / int(ratio[0])
             self.height = int(self.width * r * SCALE_FACTOR)
 
+
+    def _split_frames(self):
         ff = FfmpegProgress(shlex.split(f'ffmpeg -i {self.video_path} -vf "fps={self.fps},scale={self.width}:{self.height}" {self.frames_dir}/%05d.png'))
         with tqdm(total=100, desc="Extracting frames", unit='%', colour='WHITE') as pbar:
             for progress in ff.run_command_with_progress():
