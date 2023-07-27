@@ -15,6 +15,7 @@ ffmpeg -version
 ```
 
 If you don't have it installed, follow the links below.
+
 ### Windows
 https://phoenixnap.com/kb/ffmpeg-windows
 
@@ -23,28 +24,26 @@ https://itsfoss.com/ffmpeg/
 
 
 # Usage
+> **_Warning_**: Do not change the terminal size while video is running!
 ```
-python main.py -r <resolution> -f <fps-optional> -u <youtube url>
+python main.py -r <resolution [optional]> -f <fps [optional]> -u <youtube url>
 ```
-Since the characters in the terminal are taller than they are wide, `<resolution>` only changes the width since the height is automatically calculated to maintain the original aspect ratio.
+If `resolution` is not provided, then the video is automatically adjusted to fit the terminal.
 
-The fps of the animation is the same as the video, but you can optionally set your own. However, the actual fps depends on the resolution, the terminal, and your computer.
-
-`-r 280` should maintain 30fps while `-r 360` should maintain 24fps but YMMV.
-
-Depending on the resolution you may need to zoom out with `ctrl +-` or `ctrl scroll`. You may also need to mess around with your terminal fonts/colors to get it nice looking.
+If `fps` is not provided, then the video runs at the frame rate of the youtube video.
 
 # Example
 
 ```
-python main.py -r 240 -u https://www.youtube.com/watch?v=NWQKiefZ-XI
+python main.py -u https://www.youtube.com/watch?v=SjBOC94WHBQ
 ```
 
-![race](./img/race.png)
+![eva](./img/example.png)
 
 # TODO
 
 - Add different rendering options such as ascii, greyscale, etc
 - Option to provide a video file instead of Youtube
 - Catching signals to run cleanup
-- Audio?
+- Synced audio
+- FFmpeg use GPU?

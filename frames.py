@@ -18,6 +18,11 @@ def remove_dir(directory):
         shutil.rmtree(directory)
 
 
+def get_terminal_width():
+    size = os.get_terminal_size()
+    return size.columns, size.lines
+
+
 class FrameDownloader:
     def __init__(self, width, video_path, frames_dir, fps):
         self.width = width
@@ -27,12 +32,26 @@ class FrameDownloader:
         self.fps = fps
 
 
+    def get_width(self):
+        return self.width
+
+
+    def get_fps(self):
+        return self.fps
+
+
     def fetch_frames(self, url):
         if not os.path.isfile('prev.txt'):
             remove_dir(self.frames_dir)
         else:
             prev_w, prev_url, prev_fps = open('prev.txt', 'r').read().split('\n')
-            if int(prev_w) != self.width or prev_url != url or int(prev_fps) != self.fps:
+
+            if prev_w == 'None' or prev_fps == 'None':
+                prev_w = prev_fps = None
+            else:
+                prev_w, prev_fps = int(prev_w), int(prev_fps)
+
+            if prev_w != self.width or prev_url != url or prev_fps != self.fps:
                 remove_dir(self.frames_dir)
 
         if not os.path.exists(self.frames_dir):
@@ -44,11 +63,20 @@ class FrameDownloader:
 
 
     def _split_frames(self):
-        video_info = ffmpeg.probe(self.video_path, select_streams = "v")['streams'][0]
+        if self.fps is None:
+            video_info = ffmpeg.probe(self.video_path, select_streams = "v")['streams'][0]
+            avg_fps = video_info['avg_frame_rate'].split('/')
+            self.fps = int(avg_fps[0]) // int(avg_fps[1])
 
-        ratio = video_info['display_aspect_ratio'].split(':')
-        r = float(ratio[1]) / float(ratio[0])
-        self.height = int(self.width * r * SCALE_FACTOR)
+        if self.width is None:
+            self.width, t_height = get_terminal_width()
+            r = t_height / self.width
+            self.height = int(self.width * r) - 2
+        else:
+            video_info = ffmpeg.probe(self.video_path, select_streams = "v")['streams'][0]
+            ratio = video_info['display_aspect_ratio'].split(':')
+            r = int(ratio[1]) / int(ratio[0])
+            self.height = int(self.width * r * SCALE_FACTOR)
 
         ff = FfmpegProgress(shlex.split(f'ffmpeg -i {self.video_path} -vf "fps={self.fps},scale={self.width}:{self.height}" {self.frames_dir}/%05d.png'))
         with tqdm(total=100, desc="Extracting frames", unit='%', colour='WHITE') as pbar:
