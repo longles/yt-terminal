@@ -2,28 +2,14 @@ from ffmpeg_progress_yield import FfmpegProgress
 from tqdm import tqdm
 
 import ffmpeg
-import shutil
 import shlex
+import math
 import os
 
+from utils.files import *
+from utils.other import *
 
 SCALE_FACTOR = 0.45  # Terminal characters are taller than they are wide
-
-
-"""
-Removes a directory if it exists.
-"""
-def remove_dir(directory: str) -> None:
-    if os.path.exists(directory):
-        shutil.rmtree(directory)
-
-
-"""
-Returns width and height of the terminal this program is run in.
-"""
-def get_terminal_dimensions() -> tuple[int, int]:
-    size = os.get_terminal_size()
-    return size.columns, size.lines
 
 
 """
@@ -36,10 +22,6 @@ class FrameDownloader:
         self.frames_dir = frames_dir
         self.video_path = video_path
         self.fps = fps
-
-
-    def get_width(self) -> int:
-        return self.width
 
 
     def get_fps(self) -> int:
@@ -87,9 +69,10 @@ class FrameDownloader:
             self.fps = int(avg_fps[0]) // int(avg_fps[1])
 
         if self.width is None:  # Was not provided by cmd line
-            self.width, t_height = get_terminal_dimensions()
-            r = t_height / self.width
-            self.height = int(self.width * r) - 2
+            t_width, t_height = get_terminal_dimensions()
+            r = t_height / t_width
+            self.width = t_width
+            self.height = math.ceil(self.width * r) - 2  # space for progress bar
         else:
             video_info = ffmpeg.probe(self.video_path, select_streams = "v")['streams'][0]
             ratio = video_info['display_aspect_ratio'].split(':')

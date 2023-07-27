@@ -1,7 +1,8 @@
 from argparse import ArgumentParser
 from terminal import Renderer
 from frames import FrameDownloader
-from pytube import YouTube
+
+from utils.other import *
 
 
 VIDEO_PATH = './video.mp4'
@@ -9,17 +10,6 @@ FRAMES_DIR = './frames'
 
 WORKERS = None  # Automatically decide number of processes to spawn
 CHUNK_SIZE = 4
-
-
-"""
-Downloads a Youtube video to VIDEO_PATH.
-"""
-def download_yt(url: str) -> None:
-    try:
-        YouTube(url).streams.get_highest_resolution().download(filename=VIDEO_PATH)
-    except:
-        print("Failed to download video")
-        exit(1)
 
 
 """
@@ -50,10 +40,8 @@ def validate_input(resolution: str | None, fps: str | None) -> tuple[int | None,
 
     if resolution is None and fps is None:
         return resolution, fps
-
     if resolution is None:
         return resolution, check_fps(fps)
-
     if fps is None:
         return check_resolution(resolution), fps
 
@@ -65,19 +53,23 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--resolution', default=None)
     parser.add_argument('-f', '--fps', default=None)
     parser.add_argument('-u', '--url', required=True)
+    parser.add_argument('-p', '--performance-mode', action='store_true')
+    parser.add_argument('-s', '--stats', action='store_true')
 
     args = vars(parser.parse_args())
 
     r = args['resolution']
     f = args['fps']
     url = args['url']
+    performance = args['performance_mode']
+    stats = not args['stats']
 
     resolution, fps = validate_input(r, f)
 
-    download_yt(url)
+    download_yt(url, VIDEO_PATH)
 
     frame = FrameDownloader(resolution, VIDEO_PATH, FRAMES_DIR, fps)
     frame.fetch_frames(url)
 
-    term = Renderer(frame.get_width(), FRAMES_DIR, frame.get_fps(), WORKERS, CHUNK_SIZE)
-    term.render()
+    term = Renderer(FRAMES_DIR, frame.get_fps(), WORKERS, CHUNK_SIZE, performance, stats)
+    term.run()
