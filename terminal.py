@@ -8,31 +8,32 @@ import os
 import re
 
 
+PROJECT_NAME = 'yt-terminal'
+
 # ANSI codes
 END_CODE = '\033[0;0m'
 REFRESH_CODE = '\033[H'
 RESET_CODE = '\033c'
 
 TILE = ' '
-PROJECT_NAME = 'yt-terminal'
 
 
 """
-ANSI sequence to set the character color
+Returns an ANSI sequence to set the character color.
 """
 def fg_code(rgb: tuple[np.uint8, np.uint8, np.uint8]) -> str:
     return f'\033[38;2;{rgb[0]};{rgb[1]};{rgb[2]}m'
 
 
 """
-ANSI sequence to set the background color
+Returns an ANSI sequence to set the background color.
 """
 def bg_code(rgb: tuple[np.uint8, np.uint8, np.uint8]) -> str:
     return f'\033[48;2;{rgb[0]};{rgb[1]};{rgb[2]}m'
 
 
 """
-Turns text rainbow colored
+Turns text rainbow colored.
 """
 def rainbow(text: str) -> str:
     output = ''
@@ -49,7 +50,7 @@ def rainbow(text: str) -> str:
 
 
 """
-Handles converting frames into ascii characters and rendering onto a terminal interface
+Handles converting frames into ascii and rendering onto a terminal.
 """
 class Renderer:
     def __init__(self, width: int, frames_dir: str, fps: int, workers: int, chunk_size: int) -> None:
@@ -59,17 +60,19 @@ class Renderer:
         self.fps = fps
         self.workers = workers
         self.chunk_size = chunk_size
+        self.num_frames = 0
 
 
     """
-    Sets the height using a 2D numpy array generated from image frames
+    Sets the height using a 2D numpy array generated from image frames.
     """
     def set_height(self, frame: np.ndarray) -> None:
         self.height = frame.shape[0] // self.width
 
 
     """
-    Rendering loop that prints the ascii characters to the terminal and maintains a consistent FPS limit.
+    Rendering loop that prints the ascii characters to the terminal and maintains a consistent FPS limit. Progress bar is used
+    to visualize current status.
     """
     def render(self) -> None:
         setup = True
@@ -89,7 +92,7 @@ class Renderer:
 
 
     """
-    Printing the ascii characters using a generator expression
+    Prints the ascii characters using a generator expression.
     """
     def _draw(self, arr: np.ndarray) -> None:
         print(REFRESH_CODE)
@@ -100,7 +103,8 @@ class Renderer:
 
 
     """
-    Spawns several processes (cuz multithreading in Python is a doozy) to each convert frame into ascii characters
+    Spawns several processes (cuz multithreading in Python is a doozy) to each convert frame into ascii. Progress bar is used
+    to visualize current status.
     """
     def _convert_all_frames(self, dir: str) -> list:
         executor = ProcessPoolExecutor(max_workers=self.workers)
@@ -118,7 +122,7 @@ class Renderer:
 
 
     """
-    Reading RGB pixel data from the video frames into a 2D numpy array [width x height [r, g, b]]
+    Reads RGB pixel data from video frames into a 2D numpy array [width x height [r, g, b]].
     """
     def _set_frame_ascii(self, file: str) -> np.ndarray:
         img = Image.open(file).convert('RGB')

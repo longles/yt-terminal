@@ -20,7 +20,10 @@ If you don't have it installed, follow the links below.
 https://phoenixnap.com/kb/ffmpeg-windows
 
 ### Linux
-https://itsfoss.com/ffmpeg/
+https://phoenixnap.com/kb/install-ffmpeg-ubuntu
+
+### MacOS
+https://phoenixnap.com/kb/ffmpeg-mac
 
 
 # Usage
@@ -31,6 +34,8 @@ python main.py -r <resolution [optional]> -f <fps [optional]> -u <youtube url>
 If `resolution` is not provided, then the video is automatically adjusted to fit the terminal.
 
 If `fps` is not provided, then the video runs at the frame rate of the youtube video.
+
+The framerate will depend on your computer, the terminal you are using, and resolution. A GPU accelerated terminal like [WezTerm](https://wezfurlong.org/wezterm/index.html) or [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701) performs the best here.
 
 # Example
 

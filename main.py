@@ -12,7 +12,7 @@ CHUNK_SIZE = 4
 
 
 """
-Download a Youtube video to VIDEO_PATH.
+Downloads a Youtube video to VIDEO_PATH.
 """
 def download_yt(url: str) -> None:
     try:

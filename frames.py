@@ -9,19 +9,22 @@ import os
 
 SCALE_FACTOR = 0.45  # Terminal characters are taller than they are wide
 
+
 """
-Remove <directory> if it exists.
+Removes a directory if it exists.
 """
 def remove_dir(directory: str) -> None:
     if os.path.exists(directory):
         shutil.rmtree(directory)
 
+
 """
-Return (width, height) of the terminal this program is run in.
+Returns width and height of the terminal this program is run in.
 """
 def get_terminal_dimensions() -> tuple[int, int]:
     size = os.get_terminal_size()
     return size.columns, size.lines
+
 
 """
 Handles rescaling and frame splitting of videos.
@@ -45,7 +48,7 @@ class FrameDownloader:
 
     """
     Checks a bunch of conditions to see if the frames for a video already exist. Uses prev.txt to cache the
-    paramets of the previous execution.
+    parameters of the previous execution.
     """
     def fetch_frames(self, url: str) -> None:
         if os.path.isfile(self.video_path):  # set_resolution() needs the mp4 file
@@ -100,6 +103,7 @@ class FrameDownloader:
     """
     def _split_frames(self) -> None:
         ff = FfmpegProgress(shlex.split(f'ffmpeg -i {self.video_path} -vf "fps={self.fps},scale={self.width}:{self.height}" {self.frames_dir}/%05d.png'))
+
         with tqdm(total=100, desc="Extracting frames", unit='%', colour='WHITE') as pbar:
             for progress in ff.run_command_with_progress():
                 pbar.update(progress - pbar.n)
