@@ -30,23 +30,23 @@ python main.py -[flags] -u <youtube url>
 
 > `-r <resolution: int> [optional]`
 
-&ensp; The pixel width of the display. If this flag is not set, then it will default to the current width of your terminal.
+The pixel width of the display. If this flag is not set, then it will default to the current width of your terminal.
 
 > `-f <fps: int> [optional]`
 
-&ensp; The fps at which to split the video and replay in the terminal. Since videos download at <= 30fps, setting it too high will result in a lot of duplicate frames.
+The fps at which to split the video and replay in the terminal. Since videos download at <= 30fps, setting it too high will result in a lot of duplicate frames.
 
-> `-p <performance-mode: toggle> `
+> `-p <performance test <: toggle> `
 
-&ensp; Switch to a faster rendering algorithm. Results in better fps at higher resolutions, but can be unstable, especially if the fps value set by `-f` is too high.
+Switch to a different rendering algorithm. Performs worse than the default algorithm in most cases :(
 
 > `-s <stats: toggle> `
 
-&ensp; Add the flag to display a duration bar, fps, and elapsed time at the bottom of the video. Can be a little buggy with when enabled with the `-p` flag.
+Add the flag to display a duration bar, fps, and elapsed time at the bottom of the video. Can be a little buggy with when enabled with the `-p` flag.
 
 > `-u <youtube url: str> [required]`
 
-&ensp; URL to a video. Some videos may fail to download due to restrictions set by Youtube.
+URL to a video. Some videos may fail to download due to restrictions set by Youtube.
 
 
 ## Performance
@@ -60,10 +60,5 @@ python main.py -p -s -u https://www.youtube.com/watch?v=uMeR2W19wT0
 
 ![example](./img/example.png)
 
-# TODO
-
-- Add different rendering options such as ascii lumosity, greyscale, etc
-- Option to provide a video file instead of Youtube
-- Catching signals to run cleanup
-- Synced audio
-- FFmpeg use GPU?
+# TLDR
+python is slow, using c++ next time

@@ -40,30 +40,29 @@ class Renderer:
     """
     def run(self):
         if self.perf:
-            self.fast_render()
+            self.slow_render()
         else:
             self.render()
 
 
     """
     Rendering loop that prints the ascii characters to the terminal and maintains a consistent FPS limit. Progress bar is used
-    to visualize current status. Uses _fast_render() to improve overall performance.
+    to visualize current status. Should perform quite good in theory, but kinda flops...
     """
-    def fast_render(self) -> None:
+    def slow_render(self) -> None:
         frames = self._convert_all_frames()
         prev_frame = np.full((self.width * self.height, 3), -1)
-        t_height = get_terminal_dimensions()[1]
 
-        self._fast_draw(frames[0], prev_frame)
+        self._slow_draw(frames[0], prev_frame)
         prev_frame = frames[0]
 
         for curr_frame in tqdm(frames[1:], total=self.num_frames, desc=rainbow(PROJECT_NAME),
                                unit=' frames', ncols=self.width - 1, colour='WHITE', disable=self.stats,
-                               bar_format='%s{l_bar}{bar}{r_bar}%s%s' % (move_cursor(t_height - 1, 0), REFRESH_CODE, END_CODE)):
+                               bar_format='%s{l_bar}{bar}{r_bar}%s%s' % (move_cursor(self.height + 2, 0), REFRESH_CODE, END_CODE)):
 
             curr_time = time.perf_counter()
 
-            self._fast_draw(curr_frame, prev_frame)
+            self._slow_draw(curr_frame, prev_frame)
             prev_frame = curr_frame
 
             while time.perf_counter() < (curr_time + 1 / self.fps):  # more accurate than time.sleep()
@@ -75,17 +74,12 @@ class Renderer:
     to visualize current status.
     """
     def render(self) -> None:
-        setup = True
         frames = self._convert_all_frames()
 
         for frame in tqdm(frames, total=self.num_frames, desc=rainbow(PROJECT_NAME),
                           unit=' frames', ncols=self.width, colour='WHITE', disable=self.stats):
 
             curr_time = time.perf_counter()
-
-            if setup:
-                setup = False
-                print(REFRESH_CODE)
 
             self._draw(frame)
 
@@ -94,10 +88,10 @@ class Renderer:
 
 
     """
-    Prints only characters that have changed since the last frame. Saves on the number of writes and takes advantage
-    of vectorized numpy operations.
+    Prints only characters that have changed since the last frame. Saves on the number of pixels changed and
+    takes advantage of vectorized numpy operations.
     """
-    def _fast_draw(self, curr_frame: np.ndarray, prev_frame: np.ndarray) -> None:
+    def _slow_draw(self, curr_frame: np.ndarray, prev_frame: np.ndarray) -> None:
         def idx_coords(i):
             return ceil_div(i, self.width), int(i % self.width)
 

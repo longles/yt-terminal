@@ -72,12 +72,12 @@ class FrameDownloader:
             t_width, t_height = get_terminal_dimensions()
             r = t_height / t_width
             self.width = t_width
-            self.height = math.ceil(self.width * r) - 2  # space for progress bar
+            self.height = math.floor(self.width * r) - 2  # space for progress bar
         else:
             video_info = ffmpeg.probe(self.video_path, select_streams = "v")['streams'][0]
             ratio = video_info['display_aspect_ratio'].split(':')
             r = int(ratio[1]) / int(ratio[0])
-            self.height = int(self.width * r * SCALE_FACTOR)
+            self.height = int(self.width * r * SCALE_FACTOR) - 2
 
 
     """
